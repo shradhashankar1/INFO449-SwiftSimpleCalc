@@ -27,11 +27,153 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (with no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
-    return -1
-}
+    if args.count == 0 {
+           return 0
+       }
+
+       let lastIndex = args.count - 1
+       let operationToken = args[lastIndex]
+
+       if operationToken == "count" {
+           if args.count == 1 {
+               return 0
+           }
+           return args.count - 1
+       }
+
+       if operationToken == "avg" {
+           if args.count == 1 {
+               return 0
+           }
+
+           var sum = 0
+           var i = 0
+
+           while i < args.count - 1 {
+
+               let valueString = args[i]
+               let parsedNumber = Int(valueString)
+
+               if parsedNumber == nil {
+                   return 0
+               }
+
+               sum = sum + parsedNumber!
+               i = i + 1
+           }
+
+           let countOfNumbers = args.count - 1
+           return sum / countOfNumbers
+       }
+
+       if operationToken == "fact" {
+
+           if args.count == 1 {
+               return 0
+           }
+
+           if args.count != 2 {
+               return 0
+           }
+
+           let valueString = args[0]
+           let parsedN = Int(valueString)
+
+           if parsedN == nil {
+               return 0
+           }
+
+           let n = parsedN!
+
+           if n == 0 {
+               return 1
+           }
+           if n == 1 {
+               return 1
+           }
+
+           if n < 0 {
+               return 0
+           }
+
+           var result = 1
+           var current = 2
+
+           while current <= n {
+               result = result * current
+               current = current + 1
+           }
+
+           return result
+       }
+
+       if args.count == 3 {
+
+           let firstValueString = args[0]
+           let opToken = args[1]
+           let secondValueString = args[2]
+
+           let parsedFirstValue = Int(firstValueString)
+           let parsedSecondValue = Int(secondValueString)
+
+           if parsedFirstValue == nil {
+               return 0
+           }
+           if parsedSecondValue == nil {
+               return 0
+           }
+
+           let left = parsedFirstValue!
+           let right = parsedSecondValue!
+
+           if opToken == "+" {
+               return left + right
+           }
+
+           if opToken == "-" {
+               return left - right
+           }
+
+           if opToken == "*" {
+               return left * right
+           }
+
+           if opToken == "/" {
+               if right == 0 {
+                   return 0
+               }
+               return left / right
+           }
+
+           if opToken == "%" {
+               if right == 0 {
+                   return 0
+               }
+               return left % right
+           }
+
+           return 0
+       }
+
+       return 0
+    }
+
+
 
 func calculate(_ arg: String) -> Int {
-    return -1
+    let stringParts = arg.split(separator: " ").map { String($0) }
+
+        var expressionParts: [String] = []
+        var i = 0
+
+        while i < stringParts.count {
+            if stringParts[i] != "" {
+                expressionParts.append(stringParts[i])
+            }
+            i = i + 1
+        }
+
+        return calculate(expressionParts)
 }
 
 //: Below this are the test expressions/calls to verify if your code is correct.
